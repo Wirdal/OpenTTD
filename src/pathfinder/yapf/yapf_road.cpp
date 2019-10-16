@@ -387,9 +387,12 @@ public:
 
 			/* path was found or at least suggested
 			 * walk through the path back to its origin */
+
+			/* Prevent road vehicles from caching the last 1 or 2 turns 
+			 *(or 10 tiles if that's shorter) before their scheduled next stop. */
 			while (pNode->m_parent != nullptr) {
 				steps--;
-				if (pNode->GetIsChoice() && steps < YAPF_ROADVEH_PATH_CACHE_SEGMENTS) {
+				if (pNode->GetIsChoice() && steps < YAPF_ROADVEH_PATH_CACHE_SEGMENTS && steps <= 3) {
 					path_cache.td.push_front(pNode->GetTrackdir());
 					path_cache.tile.push_front(pNode->GetTile());
 				}
