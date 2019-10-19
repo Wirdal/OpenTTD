@@ -380,30 +380,19 @@ public:
 
 		/* if path not found - return INVALID_TRACKDIR */
 		Trackdir next_trackdir = INVALID_TRACKDIR;
-
-
-		// REMOVE ALL MY COMMENTS, start with //!!!
-		// Create a node
-		// From what, I have no idea
 		Node *pNode = Yapf().GetBestNode();
-		// If that node is not null
 		if (pNode != nullptr) {
-			// Start our step counter at 0
 			uint steps = 0;
-			// Iterate through the node, go until the parent does not exist, increment by stepping up nodes, also take note of the steps
 			for (Node *n = pNode; n->m_parent != nullptr; n = n->m_parent) steps++;
 
-		
 			/* path was found or at least suggested
 			 * walk through the path back to its origin */
 
 			/* Prevent road vehicles from caching the last 1 or 2 turns 
 			 *(or 10 tiles if that's shorter) before their scheduled next stop. */
-
-
 			while (pNode->m_parent != nullptr) {
 				steps--;
-				if (pNode->GetIsChoice() && steps < YAPF_ROADVEH_PATH_CACHE_SEGMENTS && steps <= 10) {
+				if (pNode->GetIsChoice() && steps < YAPF_ROADVEH_PATH_CACHE_SEGMENTS && steps >= 10) {
 					path_cache.td.push_front(pNode->GetTrackdir());
 					path_cache.tile.push_front(pNode->GetTile());
 				}
